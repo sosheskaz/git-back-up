@@ -9,6 +9,11 @@ function backup() {
 }
 
 function restore() {
+    which brew >> /dev/null
+    if [ $? -ne 0 ]; then
+        /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+    fi
+
     brew update; exit_if_err
 
     # These can error, but it's generally (sort of) okay
@@ -18,4 +23,4 @@ function restore() {
     brew cleanup; exit_if_err
 }
 
-gitbackup $1
+gitbackup $*

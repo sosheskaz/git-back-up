@@ -4,7 +4,8 @@ if [ -z "$label" ]; then
     exit 2
 fi
 
-repo='https://github.com/sosheskaz/git-back-up-util'
+repofile="$(dirname $0)/repo.txt"
+repo=$(cat "$repofile" 2>/dev/null)
 branch="$label-$(whoami)@$(hostname | cut -d '.' -f 1)"
 utildir="/tmp/$branch"
 startdir=$PWD
@@ -15,6 +16,15 @@ function exit_if_err() {
         cleanup
         exit $rc;
     fi
+}
+
+function set_repo() {
+    repo=$1
+    if [ -z "$repo" ]; then
+        echo "Enter the repository to use:"
+        read repo
+    fi
+    printf "$repo" > "$(dirname $0)/tmp"
 }
 
 function pre_backup() {
@@ -43,28 +53,71 @@ function cleanup() {
     rm -rf "$utildir" || true
 }
 
+function show_help() {
+    echo "Usage:"
+    echo
+    echo "Set repository to use:"
+    echo "    $0 repo <your_repo>"
+    echo
+    echo "View current repository in use:"
+    echo "    $0 repo"
+    echo
+    echo "Perform a backup:"
+    echo "    $0 backup"
+    echo
+    echo "Perform a restore:"
+    echo "    $0 restore <restore_branch>"
+    echo
+    echo "View this help page:"
+    echo "    $0 help"
+}
+
 function gitbackup() {
     command="$1"
     if [ "$command" = "backup" ]; then
+        if [ ! -f "$repofile" ]; then
+            echo "Repo not set! You need to set the repo first."
+            show_help
+            exit -1
+        fi
         cleanup
         pre_backup
         backup
         post_backup
         cleanup
     elif [ "$command" = "restore" ]; then
+        if [ ! -f "$repofile" ]; then
+            echo "Repo not set! You need to set the repo first."
+            show_help
+            exit -1
+        fi
         restore_branch="$2"
         if [ -z "$restore_branch" ]; then
             echo "You must add a branch to restore from, when using in restore mode."
+            echo "Run $0 help to show a help page."
             exit 1
         fi
         cleanup
         pre_restore $restore_branch
         restore
         cleanup
+    elif [ "$command" = "repo" ]; then
+        if [ -z "$2" ]; then
+            if [ -f "$repofile" ]; then
+                cat "$repofile"
+                echo
+            else
+                echo "No repo set. Run '$0 help' to see how to do that."
+            fi
+        fi
+    elif [ "$command" = "help" ]; then
+        show_help
     elif [ -z "$command" ]; then
-        echo "No command given; select backup or restore."
+        echo "No command given; select repo, backup, or restore."
+        echo "Or run $0 help to show a help page."
         exit 1
     else
-        echo "Invalid command '$command'; select backup or restore."
+        echo "Invalid command '$command'; select repo, backup, or restore."
+        echo "Or run $0 help to show a help page."
     fi
 }
