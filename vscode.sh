@@ -3,7 +3,12 @@ label=vscode
 
 source "$(dirname $0)/common.sh"
 
-vscode_dir="$HOME/Library/Application Support/Code/User"
+kernel="$(uname)"
+if [ "$kernel" = "Darwin" ]; then
+    vscode_dir="$HOME/Library/Application Support/Code/User"
+else
+    vscode_dir="$HOME/.config/Code/User"
+fi
 
 function backup() {
     tmpdir=$PWD

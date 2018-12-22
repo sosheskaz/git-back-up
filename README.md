@@ -43,6 +43,11 @@ I recommend that the repo you back up to is private, just in case there winds up
 you don't want public in the backups. Backing up sensitive information with Git Back Up is not
 recommended; look into an encrypted backup system like [duplicity](http://duplicity.nongnu.org/).
 
+### Plugins
+
+* `brew.sh` - For use with macOS homebrew. Backs up formulae, casks, and taps. Restores same, but also installs homebrew if not present and in `$PATH`.
+* `vscode.sh` - For use with Visual Studio code. Backs up extensions (without versions) and settings. Restores same.
+
 ### Please
 
 Don't save binaries or databases, or anything with massive amounts of data with this. Just don't.

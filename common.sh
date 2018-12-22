@@ -50,22 +50,22 @@ function cleanup() {
 }
 
 function show_help() {
-    echo "Usage:"
-    echo
-    echo "Set repository to use:"
-    echo "    $0 repo <your_repo>"
-    echo
-    echo "View current repository in use:"
-    echo "    $0 repo"
-    echo
-    echo "Perform a backup:"
-    echo "    $0 backup"
-    echo
-    echo "Perform a restore:"
-    echo "    $0 restore <restore_branch>"
-    echo
-    echo "View this help page:"
-    echo "    $0 help"
+    echo "Usage:
+
+Set repository to use:
+    $0 repo <your_repo>
+
+View current repository in use:
+    $0 repo
+
+Perform a backup:
+    $0 backup
+
+Perform a restore:
+    $0 restore <restore_branch>
+
+View this help page:
+    $0 help"
 }
 
 function gitbackup() {
