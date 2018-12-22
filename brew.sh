@@ -6,6 +6,7 @@ source "$(dirname $0)/common.sh"
 function backup() {
     brew list > brew.txt; exit_if_err
     brew cask list > brewcask.txt; exit_if_err
+    brew tap > brewtap.txt; exit_if_err
 }
 
 function restore() {
@@ -19,6 +20,7 @@ function restore() {
     # These can error, but it's generally (sort of) okay
     xargs brew install < brew.txt
     xargs brew cask install < brewcask.txt
+    xargs brew tap < brewtap.txt
 
     brew cleanup; exit_if_err
 }

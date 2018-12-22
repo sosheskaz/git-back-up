@@ -4,11 +4,16 @@ if [ -z "$label" ]; then
     exit 2
 fi
 
-repofile="$(dirname $0)/repo.txt"
+gitbackup_dir=$(dirname $0)
+startdir=$PWD
+cd "$gitbackup_dir"
+gitbackup_dir=$PWD
+cd "$startdir"
+
+repofile="$gitbackup_dir/repo.txt"
 repo=$(cat "$repofile" 2>/dev/null)
 branch="$label-$(whoami)@$(hostname | cut -d '.' -f 1)"
 utildir="/tmp/$branch"
-startdir=$PWD
 
 function exit_if_err() {
     rc=$?
@@ -16,15 +21,6 @@ function exit_if_err() {
         cleanup
         exit $rc;
     fi
-}
-
-function set_repo() {
-    repo=$1
-    if [ -z "$repo" ]; then
-        echo "Enter the repository to use:"
-        read repo
-    fi
-    printf "$repo" > "$(dirname $0)/tmp"
 }
 
 function pre_backup() {
@@ -109,6 +105,8 @@ function gitbackup() {
             else
                 echo "No repo set. Run '$0 help' to see how to do that."
             fi
+        else
+            printf "$2" > "$gitbackup_dir/repo.txt"
         fi
     elif [ "$command" = "help" ]; then
         show_help
