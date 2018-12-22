@@ -12,9 +12,8 @@ running as.
 
 I find myself re-imaging computers often, and it's always such a pain to restore everything. And
 I want a remote backup system for my configurations that's off-site and separated by computer.
-
-Other backup systems I've used lack the simplicity of git branches. They're also more difficult to
-audit or diff, to see when a particular change was made. 
+Other backup systems I've used lack the simplicity of git branches. They're more difficult to
+audit and diff, more difficult to manage, and more difficult to migrate across machines. 
 
 ## Requirements:
 
@@ -74,6 +73,6 @@ It should end with a call to `gitbackup $*`, a function provided by `common.sh` 
 Then, you need to create functions `backup` and `restore`. For backup, all you have to do is put
 the files you want backed up into the working directory. For restore, the files you backed up are
 in the working directory, and you need to put them back where they belong (or do something with
-them, as is the case with package manager backups).
+them, as is the case with package manager backups). Check out the pre-existing files for examples.
 
 That's it - Git Back Up does the rest of the plumbing.
