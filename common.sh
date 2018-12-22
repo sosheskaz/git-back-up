@@ -27,26 +27,34 @@ function pre_backup() {
     mkdir -m 0700 -p "$utildir"
     cd "$utildir"
     git clone -b "$branch" "$repo" . || (git init && git checkout -b "$branch" && git remote add origin "$repo"); exit_if_err
+    git rm -rf .
+    git clean -fxd
 }
 
 function post_backup() {
     cd "$utildir"
-    git add *
-    git commit -m "Automated Commit $(date)"
-    git push --set-upstream origin "$branch"
+    git add -A; exit_if_err
+    git commit -am "Automated Commit $(date)"; exit_if_err
+    git push --set-upstream origin "$branch"; exit_if_err
+    cd "$startdir"
+    rm -rf "$utildir"
 }
 
 function pre_restore() {
     restore_branch="$1"
+    mkdir -m 0700 -p "$utildir"
     cd "$utildir"
     mkdir -m 0700 -p "$utildir"
     cd "$utildir"
     git clone -b "$restore_branch" "$repo" .; exit_if_err
+
+    # Otherwise tools like rsync will capture it
+    rm -rf .git
 }
 
 function cleanup() {
     cd $startdir
-    rm -rf "$utildir" || true
+    if [ -d "$utildir" ]; then rm -rf "$utildir"; exit_if_err; fi
 }
 
 function show_help() {

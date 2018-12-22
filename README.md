@@ -46,6 +46,8 @@ recommended; look into an encrypted backup system like [duplicity](http://duplic
 ### Plugins
 
 * `brew.sh` - For use with macOS homebrew. Backs up formulae, casks, and taps. Restores same, but also installs homebrew if not present and in `$PATH`.
+* `htop.sh` - Captures the htop config file.
+* `shprofile` - Captures per-user shell profile for bash or zsh.
 * `vscode.sh` - For use with Visual Studio code. Backs up extensions (without versions) and settings. Restores same.
 
 ### Please
