@@ -86,7 +86,7 @@ function gitbackup() {
         fi
         cleanup
         pre_backup
-        backup
+        backup "${@:2}"
         post_backup
         cleanup
     elif [ "$command" = "restore" ]; then
@@ -103,7 +103,7 @@ function gitbackup() {
         fi
         cleanup
         pre_restore $restore_branch
-        restore
+        restore "${@:3}"
         cleanup
     elif [ "$command" = "repo" ]; then
         if [ -z "$2" ]; then
