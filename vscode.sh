@@ -29,12 +29,16 @@ function restore() {
             rc=$?
             if [ $rc -ne 0 ]; then anyfailed=$rc; fi
         done
-        if [ $anyfailed -ne 0 ]; then exit $anyfailed; fi
     fi
 
     if [ -z "$1" -o "$1" = "settings" ]; then
         rm extensions.txt
         rsync -rv . "$vscode_dir" --exclude=".git/*"; exit_if_err
+    fi
+    if [ $anyfailed -ne 0 ]; then
+        cleanup
+        echo "An error occurred. See above output for details."
+        exit $anyfailed;
     fi
 }
 
