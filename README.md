@@ -13,14 +13,16 @@ running as.
 I find myself re-imaging computers often, and it's always such a pain to restore everything. And
 I want a remote backup system for my configurations that's off-site and separated by computer.
 Other backup systems I've used lack the simplicity of git branches. They're more difficult to
-audit and diff, more difficult to manage, and more difficult to migrate across machines. 
+audit and diff, more difficult to manage, and more difficult to migrate across machines.
 
-## Requirements:
+## Requirements
 
 * git
-* /bin/sh
+* `bash` or `dash` (old school bourne shell probably works tool), accessible via /bin/sh
+* A few common utilities - `dirname`, `cat`, `echo`, etc.
+* Other common or relevant tools, depending on the script
 
-## Usage:
+## Usage
 
 The first thing you'll need to do is run `vscode.sh repo <your_repo>`, where `vscode.sh` can be any
 script (they all use the same repo).

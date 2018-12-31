@@ -15,7 +15,7 @@ repo=$(cat "$repofile" 2>/dev/null)
 branch="$label-$(whoami)@$(hostname | cut -d '.' -f 1)"
 utildir="/tmp/$branch"
 
-function exit_if_err() {
+exit_if_err() {
     rc=$?
     if [ $rc -ne 0 ]; then
         cleanup
@@ -23,7 +23,7 @@ function exit_if_err() {
     fi
 }
 
-function pre_backup() {
+pre_backup() {
     mkdir -m 0700 -p "$utildir"
     cd "$utildir"
     git clone -b "$branch" "$repo" . || (git init && git checkout -b "$branch" && git remote add origin "$repo"); exit_if_err
@@ -31,7 +31,7 @@ function pre_backup() {
     git clean -fxd
 }
 
-function post_backup() {
+post_backup() {
     cd "$utildir"
     git add -A; exit_if_err
     git commit -am "Automated Commit $(date)"; exit_if_err
@@ -40,7 +40,7 @@ function post_backup() {
     rm -rf "$utildir"
 }
 
-function pre_restore() {
+pre_restore() {
     restore_branch="$1"
     mkdir -m 0700 -p "$utildir"
     cd "$utildir"
@@ -52,12 +52,12 @@ function pre_restore() {
     rm -rf .git
 }
 
-function cleanup() {
+cleanup() {
     cd $startdir
     if [ -d "$utildir" ]; then rm -rf "$utildir"; exit_if_err; fi
 }
 
-function show_help() {
+show_help() {
     echo "Usage:
 
 Set repository to use:
@@ -76,7 +76,7 @@ View this help page:
     $0 help"
 }
 
-function gitbackup() {
+gitbackup() {
     command="$1"
     if [ "$command" = "backup" ]; then
         if [ ! -f "$repofile" ]; then
